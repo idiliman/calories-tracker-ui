@@ -53,7 +53,14 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
       },
       body: JSON.stringify({ prompt, userName: id }),
     });
-    return response.json();
+    if (response.status === 200) {
+      return response.json();
+    }
+    return {
+      status: response.status,
+      message: null,
+      error: null,
+    };
   } catch (error) {
     console.error("Error posting intake:", JSON.stringify(error));
     throw error;
@@ -63,7 +70,10 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
 export async function getSummary(): Promise<SummaryData | null> {
   try {
     const response = await fetch(`${process.env.API_URL}/summary`);
-    return response.json();
+    if (response.status === 200) {
+      return response.json();
+    }
+    return null;
   } catch (error) {
     console.error("Error getting summary:", JSON.stringify(error));
     return null;
@@ -74,9 +84,12 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
   try {
     const id = await getId();
     const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`);
-    return response.json();
+    if (response.status === 200) {
+      return response.json();
+    }
+    return null;
   } catch (error) {
-    console.error(error);
+    console.error("Error getting daily intake:", JSON.stringify(error));
     return null;
   }
 }
