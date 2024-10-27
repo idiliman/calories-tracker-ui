@@ -1,6 +1,6 @@
 "use client";
 
-import { getSummary, SummaryData } from "@/data/services/ai";
+import { SummaryData } from "@/data/services/ai";
 import { use, useState } from "react";
 
 import { format } from "date-fns";
@@ -9,7 +9,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   ChartContainer,
   ChartLegend,
@@ -21,7 +20,7 @@ import {
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 interface SummaryProps {
-  summaryPromise: Promise<SummaryData>;
+  summaryPromise: Promise<SummaryData | null>;
 }
 
 export default function Summary({ summaryPromise }: SummaryProps) {
@@ -29,7 +28,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
 
   const [activeTab, setActiveTab] = useState("total");
 
-  const chartData = summary.dailyIntakes.map((intake) => ({
+  const chartData = summary?.dailyIntakes.map((intake) => ({
     month: format(new Date(intake.date), "MMM dd hh:mm"),
     calories: parseFloat(intake.summary.calories),
     protein: parseFloat(intake.summary.protein),
@@ -76,19 +75,19 @@ export default function Summary({ summaryPromise }: SummaryProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Calories</Badge>
-                  <span>{summary.overallSummary.total.calories}</span>
+                  <span>{summary?.overallSummary.total.calories}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Protein</Badge>
-                  <span>{summary.overallSummary.total.protein}g</span>
+                  <span>{summary?.overallSummary.total.protein}g</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Carbs</Badge>
-                  <span>{summary.overallSummary.total.carbs}g</span>
+                  <span>{summary?.overallSummary.total.carbs}g</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Fat</Badge>
-                  <span>{summary.overallSummary.total.fat}g</span>
+                  <span>{summary?.overallSummary.total.fat}g</span>
                 </div>
               </div>
             </CardContent>
@@ -103,19 +102,19 @@ export default function Summary({ summaryPromise }: SummaryProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Calories</Badge>
-                  <span>{summary.overallSummary.average.calories}</span>
+                  <span>{summary?.overallSummary.average.calories}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Protein</Badge>
-                  <span>{summary.overallSummary.average.protein}g</span>
+                  <span>{summary?.overallSummary.average.protein}g</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Carbs</Badge>
-                  <span>{summary.overallSummary.average.carbs}g</span>
+                  <span>{summary?.overallSummary.average.carbs}g</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Fat</Badge>
-                  <span>{summary.overallSummary.average.fat}g</span>
+                  <span>{summary?.overallSummary.average.fat}g</span>
                 </div>
               </div>
             </CardContent>
@@ -183,7 +182,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
             collapsible
             className="w-full"
           >
-            {summary.dailyIntakes.map((intake, index) => (
+            {summary?.dailyIntakes.map((intake, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}

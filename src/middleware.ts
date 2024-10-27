@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { generateRandomName } from "../lib/randomName";
-import { ID_KEY } from "../lib/id";
+import { generateRandomName } from "@/lib/randomName";
+import { ID_KEY } from "@/lib/id";
 
 export const COOKIE_OPTIONS = {
   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365), // 1 year

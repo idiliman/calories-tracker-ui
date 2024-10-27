@@ -1,10 +1,8 @@
 import { Suspense } from "react";
-
-import { getDailyIntake, getSummary } from "@/data/services/ai";
+import { getDailyIntake } from "@/data/services/ai";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ProgressCard from "./_components/progress-card";
 import RecentMeals from "./_components/recent-meals";
-import { getId } from "../../lib/id";
 import Header from "./_components/header";
 
 export const experimental_ppr = true;
@@ -18,7 +16,7 @@ export default function HomePage() {
         </Suspense>
         <ProgressCard />
         <Suspense fallback={<div>Loading...</div>}>
-          <RecentMeals dailyIntakePromise={getDailyIntake("idil")} />
+          <RecentMeals dailyIntakePromise={getDailyIntake()} />
         </Suspense>
       </div>
     </ScrollArea>

@@ -1,4 +1,4 @@
-import { getId } from "../../../lib/id";
+import { getId } from "@/lib/id";
 
 export default async function Header() {
   const id = await getId();

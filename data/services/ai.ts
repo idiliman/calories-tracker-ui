@@ -1,6 +1,6 @@
 "use server";
 
-import { getId } from "../../lib/id";
+import { getId } from "@/lib/id";
 
 interface Food {
   name: string;
@@ -60,12 +60,17 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
   }
 }
 
-export async function getSummary(): Promise<SummaryData> {
-  const response = await fetch(`${process.env.API_URL}/summary`);
-  return response.json();
+export async function getSummary(): Promise<SummaryData | null> {
+  try {
+    const response = await fetch(`${process.env.API_URL}/summary`);
+    return response.json();
+  } catch (error) {
+    console.error("Error getting summary:", JSON.stringify(error));
+    return null;
+  }
 }
 
-export async function getDailyIntake(userName: string): Promise<DailyIntake[] | null> {
+export async function getDailyIntake(): Promise<DailyIntake[] | null> {
   try {
     const id = await getId();
     const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`);
