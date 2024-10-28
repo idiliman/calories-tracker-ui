@@ -23,7 +23,7 @@ export default function RecentMeals({ dailyIntakePromise }: RecentMealsProps) {
         <AddMealsModal />
       </CardHeader>
       <CardContent>
-        <ScrollArea className="max-h-[200px]">
+        <ScrollArea className="h-[250px]">
           {dailyIntake && dailyIntake.length > 0 ? (
             <div className="space-y-4">
               {dailyIntake.flatMap((intake) =>

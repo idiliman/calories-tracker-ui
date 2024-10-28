@@ -128,7 +128,7 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
           <GearIcon className="mr-2 h-4 w-4 text-base" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-w-md">
+      <DrawerContent>
         <DrawerHeader>
           <DialogTitle className="text-base">Update</DialogTitle>
         </DrawerHeader>

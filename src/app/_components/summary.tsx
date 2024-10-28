@@ -27,6 +27,7 @@ interface SummaryProps {
 
 export default function Summary({ summaryPromise }: SummaryProps) {
   const summary = use(summaryPromise);
+
   const [activeTab, setActiveTab] = useState("total");
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
@@ -176,7 +177,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
           <CardTitle>Daily Intake Details</CardTitle>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="max-h-[200px]">
+          <ScrollArea className="h-[250px]">
             <Accordion
               type="single"
               collapsible
@@ -187,7 +188,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
                   key={index}
                   value={`item-${index}`}
                 >
-                  <AccordionTrigger>{format(new Date(intake.date), "MMMM d, yyyy hh:mm")}</AccordionTrigger>
+                  <AccordionTrigger>{format(new Date(intake.date), "MMMM d, yyyy hh:mm:ss")}</AccordionTrigger>
                   <AccordionContent>
                     <Table>
                       <TableHeader>

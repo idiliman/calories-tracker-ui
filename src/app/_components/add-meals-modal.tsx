@@ -39,10 +39,10 @@ export default function AddMealsModal() {
           setNewMeal("");
           setIsOpen(false);
         } else {
-          console.error("Failed to add meal:", res.error);
+          console.log("Failed to add meal:", res.error);
         }
       } catch (error) {
-        console.error("Failed to add meal:", error);
+        console.log("Failed to add meal:", error);
       }
     });
   };
@@ -111,7 +111,7 @@ export default function AddMealsModal() {
           Add Meal
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-w-md">
+      <DrawerContent>
         <DrawerHeader>
           <DrawerTitle className="text-base">Add a Meal</DrawerTitle>
         </DrawerHeader>
