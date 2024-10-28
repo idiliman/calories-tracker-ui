@@ -143,6 +143,7 @@ export default function AddMealsModal() {
             <Button
               variant="outline"
               className="text-base"
+              disabled={isPending}
             >
               Cancel
             </Button>

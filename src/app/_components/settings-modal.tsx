@@ -139,15 +139,21 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DialogTitle className="text-base">Update</DialogTitle>
+          <DialogTitle>Update</DialogTitle>
         </DrawerHeader>
         <form
           onSubmit={handleSettings}
           className="space-y-4 px-4"
         >
           <div className="grid items-center gap-1.5">
-            <Label htmlFor="calorie">Calorie goals</Label>
+            <Label
+              htmlFor="calorie"
+              className="text-base"
+            >
+              Calorie goals
+            </Label>
             <Input
+              className="text-base"
               id="calorie"
               min={1000}
               type="number"
@@ -159,8 +165,14 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
           </div>
 
           <div className="grid items-center gap-1.5">
-            <Label htmlFor="username">Username</Label>
+            <Label
+              htmlFor="username"
+              className="text-base"
+            >
+              Username
+            </Label>
             <Input
+              className="text-base"
               id="username"
               disabled={!admin}
               maxLength={20}
