@@ -1,6 +1,7 @@
 "use server";
 
 import { getId } from "@/lib/cookies";
+import { revalidatePath } from "next/cache";
 
 interface Food {
   name: string;
@@ -54,14 +55,26 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
       body: JSON.stringify({ prompt, userName: id }),
     });
 
+    if (response.status === 200) {
+      revalidatePath("/");
+      return {
+        status: response.status,
+        message: null,
+        error: null,
+      };
+    }
     return {
       status: response.status,
       message: null,
-      error: null,
+      error: "Failed to post intake",
     };
   } catch (error) {
     console.log("Error posting intake:", JSON.stringify(error));
-    throw error;
+    return {
+      status: 500,
+      message: null,
+      error: "Internal server error",
+    };
   }
 }
 
@@ -69,7 +82,11 @@ export async function getSummary(): Promise<SummaryData | null> {
   try {
     const id = await getId();
 
-    const response = await fetch(`${process.env.API_URL}/summary/${id}`);
+    const response = await fetch(`${process.env.API_URL}/summary/${id}`, {
+      next: {
+        revalidate: 3600,
+      },
+    });
     if (response.status === 200) {
       return response.json();
     }
@@ -83,7 +100,12 @@ export async function getSummary(): Promise<SummaryData | null> {
 export async function getDailyIntake(): Promise<DailyIntake[] | null> {
   try {
     const id = await getId();
-    const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`);
+
+    const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`, {
+      next: {
+        revalidate: 3600,
+      },
+    });
     if (response.status === 200) {
       return response.json();
     }

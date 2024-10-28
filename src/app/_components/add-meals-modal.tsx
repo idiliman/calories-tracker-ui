@@ -13,15 +13,13 @@ import { Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { postIntake } from "@/data/services/ai";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 const placeholders = [
+  "3 roti canai, teh tarik",
+  "Yesterday, 1 set ayam gepuk, teh o ais",
   "2 eggs, toast, and coffee (no sugar)",
-  "Yesterday, grilled salmon and vegetables",
-  "Chicken salad and 1 apple",
-  "Greek yogurt with berries",
 ];
 
 export default function AddMealsModal() {
@@ -31,7 +29,6 @@ export default function AddMealsModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   const isDesktop = useMediaQuery("(min-width: 640px)");
-  const router = useRouter();
 
   const handleAddMeal = async (e: React.FormEvent) => {
     startTransition(async () => {
@@ -41,7 +38,6 @@ export default function AddMealsModal() {
         if (res.status === 200) {
           setNewMeal("");
           setIsOpen(false);
-          router.refresh();
         } else {
           console.error("Failed to add meal:", res.error);
         }

@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     ppr: true,
+    dynamicIO: true,
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
   },
 };
 
