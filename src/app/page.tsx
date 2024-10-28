@@ -14,7 +14,9 @@ export default function HomePage() {
         <Suspense fallback={<div>Loading...</div>}>
           <Header />
         </Suspense>
-        <ProgressCard />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProgressCard />
+        </Suspense>
         <Suspense fallback={<div>Loading...</div>}>
           <RecentMeals dailyIntakePromise={getDailyIntake()} />
         </Suspense>

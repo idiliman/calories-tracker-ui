@@ -1,6 +1,6 @@
 "use server";
 
-import { getId } from "@/lib/id";
+import { getId } from "@/lib/cookies";
 
 interface Food {
   name: string;
@@ -60,7 +60,7 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
       error: null,
     };
   } catch (error) {
-    console.error("Error posting intake:", JSON.stringify(error));
+    console.log("Error posting intake:", JSON.stringify(error));
     throw error;
   }
 }
@@ -75,7 +75,7 @@ export async function getSummary(): Promise<SummaryData | null> {
     }
     return null;
   } catch (error) {
-    console.error("Error getting summary:", JSON.stringify(error));
+    console.log("Error getting summary:", JSON.stringify(error));
     return null;
   }
 }
@@ -89,7 +89,7 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
     }
     return null;
   } catch (error) {
-    console.error("Error getting daily intake:", JSON.stringify(error));
+    console.log("Error getting daily intake:", JSON.stringify(error));
     return null;
   }
 }

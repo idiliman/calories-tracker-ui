@@ -1,20 +1,15 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
+import { getDailyIntake } from "@/data/services/ai";
+import { getCalorieGoal } from "@/lib/cookies";
 
-const todayIntake = {
-  calories: 1200,
-  protein: 60,
-  carbs: 150,
-  fat: 40,
-};
+export default async function ProgressCard() {
+  const calorieGoal = await getCalorieGoal();
+  const dailyIntake = await getDailyIntake();
 
-const calorieGoal = 2000;
+  const totalCalories = dailyIntake?.reduce((acc, intake) => acc + parseInt(intake.summary.calories), 0) ?? 0;
 
-export default function ProgressCard() {
-  const [progress, setProgress] = useState((todayIntake.calories / calorieGoal) * 100);
+  const progress = (totalCalories / calorieGoal) * 100;
 
   return (
     <Card>
@@ -25,7 +20,7 @@ export default function ProgressCard() {
         <div className="space-y-2">
           <div className="flex justify-between">
             <span>
-              {todayIntake.calories} / {calorieGoal} kcal
+              {totalCalories} / {calorieGoal} kcal
             </span>
             <span>{Math.round(progress)}%</span>
           </div>
