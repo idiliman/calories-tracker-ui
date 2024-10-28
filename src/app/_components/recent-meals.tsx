@@ -7,6 +7,7 @@ import { DailyIntake } from "@/data/services/ai";
 import { format, parseISO } from "date-fns";
 import { use } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface RecentMealsProps {
   dailyIntakePromise: Promise<DailyIntake[] | null>;
@@ -48,5 +49,26 @@ export default function RecentMeals({ dailyIntakePromise }: RecentMealsProps) {
         </ScrollArea>
       </CardContent>
     </Card>
+  );
+}
+
+export function RecentMealsSkeleton() {
+  return (
+    <div className="space-y-4">
+      {[...Array(5)].map((_, i) => (
+        <div
+          key={i}
+          className="flex items-center"
+        >
+          <Skeleton className="h-4 w-4 mr-2" />
+          <div className="flex-1 space-y-1">
+            <Skeleton className="h-4 w-[120px]" />
+            <Skeleton className="h-3 w-[60px]" />
+            <Skeleton className="h-3 w-[80px]" />
+          </div>
+          <Skeleton className="h-3 w-[40px]" />
+        </div>
+      ))}
+    </div>
   );
 }
