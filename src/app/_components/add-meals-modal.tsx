@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState, useTransition } from "react";
 import { postIntake } from "@/data/services/ai";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { useRouter } from "next/navigation";
 
 const placeholders = [
   "3 roti canai, teh tarik",
@@ -28,6 +29,7 @@ export default function AddMealsModal() {
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
 
+  const router = useRouter();
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
   const handleAddMeal = async (e: React.FormEvent) => {
@@ -36,6 +38,7 @@ export default function AddMealsModal() {
       try {
         const res = await postIntake({ prompt: newMeal });
         if (res.status === 200) {
+          router.refresh();
           setNewMeal("");
           setIsOpen(false);
         } else {

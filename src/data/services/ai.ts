@@ -1,7 +1,7 @@
 "use server";
 
 import { getId } from "@/lib/cookies";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 interface Food {
   name: string;
@@ -55,11 +55,12 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
       body: JSON.stringify({ prompt, userName: id }),
     });
 
-    revalidatePath("/");
-    // revalidateTag("summary");
-    // revalidateTag("daily");
-
     if (response.status === 200) {
+      revalidateTag(`summary-${id}`);
+      revalidateTag(`daily-intake-${id}`);
+
+      console.log("purge cached", `summary-${id}`, `daily-intake-${id}`);
+
       return {
         status: response.status,
         message: null,
@@ -85,7 +86,12 @@ export async function getSummary(): Promise<SummaryData | null> {
   try {
     const id = await getId();
 
-    const response = await fetch(`${process.env.API_URL}/summary/${id}`);
+    const response = await fetch(`${process.env.API_URL}/summary/${id}`, {
+      cache: "force-cache",
+      next: {
+        tags: [`summary-${id}`],
+      },
+    });
     if (response.status === 200) {
       return response.json();
     }
@@ -103,7 +109,7 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
     const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`, {
       cache: "force-cache",
       next: {
-        tags: ["daily"],
+        tags: [`daily-intake-${id}`],
       },
     });
     if (response.status === 200) {

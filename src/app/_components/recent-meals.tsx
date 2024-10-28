@@ -24,28 +24,24 @@ export default function RecentMeals({ dailyIntakePromise }: RecentMealsProps) {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[250px]">
-          {dailyIntake && dailyIntake.length > 0 ? (
-            <div className="space-y-4">
-              {dailyIntake.flatMap((intake) =>
-                intake.foods.map((meal) => (
-                  <div
-                    key={`${intake.date}-${meal.name}`}
-                    className="flex items-center"
-                  >
-                    <Utensils className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <div className="flex-1 space-y-1">
-                      <p className="text-sm font-medium leading-none">{meal.name}</p>
-                      <p className="text-sm text-muted-foreground">{meal.calories} kcal</p>
-                      <p className="text-sm text-muted-foreground">{meal.mealType}</p>
-                    </div>
-                    <div className="text-sm text-muted-foreground">{format(parseISO(intake.date), "HH:mm")}</div>
+          <div className="space-y-4">
+            {dailyIntake?.flatMap((intake) =>
+              intake.foods.map((meal) => (
+                <div
+                  key={`${intake.date}-${meal.name}`}
+                  className="flex items-center"
+                >
+                  <Utensils className="mr-2 h-4 w-4 text-muted-foreground" />
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm font-medium leading-none">{meal.name}</p>
+                    <p className="text-sm text-muted-foreground">{meal.calories} kcal</p>
+                    <p className="text-sm text-muted-foreground">{meal.mealType}</p>
                   </div>
-                ))
-              )}
-            </div>
-          ) : (
-            <div className="text-center text-sm text-muted-foreground">No meals found</div>
-          )}
+                  <div className="text-sm text-muted-foreground">{format(parseISO(intake.date), "HH:mm")}</div>
+                </div>
+              ))
+            )}
+          </div>
         </ScrollArea>
       </CardContent>
     </Card>
@@ -54,21 +50,23 @@ export default function RecentMeals({ dailyIntakePromise }: RecentMealsProps) {
 
 export function RecentMealsSkeleton() {
   return (
-    <div className="space-y-4">
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-4 w-4 mr-2" />
+      </CardHeader>
       {[...Array(5)].map((_, i) => (
-        <div
+        <CardContent
           key={i}
           className="flex items-center"
         >
-          <Skeleton className="h-4 w-4 mr-2" />
           <div className="flex-1 space-y-1">
             <Skeleton className="h-4 w-[120px]" />
             <Skeleton className="h-3 w-[60px]" />
             <Skeleton className="h-3 w-[80px]" />
           </div>
           <Skeleton className="h-3 w-[40px]" />
-        </div>
+        </CardContent>
       ))}
-    </div>
+    </Card>
   );
 }

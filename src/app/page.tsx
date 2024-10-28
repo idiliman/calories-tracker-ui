@@ -6,7 +6,7 @@ import Header, { HeaderSkeleton } from "./_components/header";
 
 export const experimental_ppr = true;
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <div className="space-y-6">
       <Suspense fallback={<HeaderSkeleton />}>
