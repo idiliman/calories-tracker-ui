@@ -53,9 +53,7 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
       },
       body: JSON.stringify({ prompt, userName: id }),
     });
-    if (response.status === 200) {
-      return response.json();
-    }
+
     return {
       status: response.status,
       message: null,
@@ -69,7 +67,9 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
 
 export async function getSummary(): Promise<SummaryData | null> {
   try {
-    const response = await fetch(`${process.env.API_URL}/summary`);
+    const id = await getId();
+
+    const response = await fetch(`${process.env.API_URL}/summary/${id}`);
     if (response.status === 200) {
       return response.json();
     }
