@@ -56,7 +56,7 @@ export default function AddMealsModal() {
           variant="ghost"
           size="sm"
         >
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="mr-2 h-4 w-4 text-base" />
           Add Meal
         </Button>
       </DialogTrigger>
@@ -69,7 +69,7 @@ export default function AddMealsModal() {
           className="space-y-4"
         >
           <Textarea
-            className="min-h-[100px]"
+            className="min-h-[100px] text-base"
             value={newMeal}
             onChange={(e) => setNewMeal(e.target.value)}
             placeholder={placeholder}
