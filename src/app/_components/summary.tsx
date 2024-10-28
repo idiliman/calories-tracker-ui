@@ -18,6 +18,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface SummaryProps {
   summaryPromise: Promise<SummaryData | null>;
@@ -25,8 +26,8 @@ interface SummaryProps {
 
 export default function Summary({ summaryPromise }: SummaryProps) {
   const summary = use(summaryPromise);
-
   const [activeTab, setActiveTab] = useState("total");
+  const isDesktop = useMediaQuery("(min-width: 640px)");
 
   const chartData = summary?.dailyIntakes.map((intake) => ({
     month: format(new Date(intake.date), "MMM dd hh:mm"),
@@ -132,7 +133,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
             className="min-h-[200px] w-full"
           >
             <BarChart
-              width={350}
+              width={isDesktop ? 350 : 300}
               height={200}
               accessibilityLayer
               data={chartData}
