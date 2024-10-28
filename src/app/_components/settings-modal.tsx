@@ -55,7 +55,7 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
         if (hasCaloriesGoalChanged) {
           await updateCalorieGoalAction(parseInt(caloriesGoal));
         }
-        if (hasUserNameChanged && !admin) {
+        if (hasUserNameChanged && admin) {
           await updateUserNameAction(userName);
         }
         setIsOpen(false);
