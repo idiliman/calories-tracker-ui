@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { use, useEffect, useState, useTransition } from "react";
+import { use, useState, useTransition } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { GearIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
@@ -21,9 +21,10 @@ import { updateCalorieGoalAction, updateUserNameAction } from "@/data/services/c
 interface SettingsModalProps {
   calorieGoalPromise: Promise<number>;
   id: string;
+  admin?: boolean;
 }
 
-export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalProps) {
+export default function SettingsModal({ calorieGoalPromise, id, admin = false }: SettingsModalProps) {
   const [userName, setUserName] = useState(id);
   const [caloriesGoal, setCaloriesGoal] = useState<string>(use(calorieGoalPromise).toString());
   const [isPending, startTransition] = useTransition();
@@ -54,7 +55,7 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
         if (hasCaloriesGoalChanged) {
           await updateCalorieGoalAction(parseInt(caloriesGoal));
         }
-        if (hasUserNameChanged) {
+        if (hasUserNameChanged && !admin) {
           await updateUserNameAction(userName);
         }
         setIsOpen(false);
@@ -63,8 +64,6 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
       }
     });
   };
-
-  useEffect(() => {}, []);
 
   if (isDesktop) {
     return (
@@ -97,7 +96,7 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
               required
             />
             <Input
-              disabled
+              disabled={!admin}
               maxLength={20}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
@@ -146,7 +145,7 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
             required
           />
           <Input
-            disabled
+            disabled={!admin}
             className="text-base"
             maxLength={20}
             value={userName}
