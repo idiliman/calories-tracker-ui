@@ -17,6 +17,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { GearIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { updateCalorieGoalAction, updateUserNameAction } from "@/data/services/cookies";
+import { Label } from "@/components/ui/label";
 
 interface SettingsModalProps {
   calorieGoalPromise: Promise<number>;
@@ -36,12 +37,12 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
   const initialUserName = id;
   const initialCaloriesGoal = use(calorieGoalPromise);
 
+  // Check if any values have changed
+  const hasUserNameChanged = userName !== initialUserName;
+  const hasCaloriesGoalChanged = parseInt(caloriesGoal) !== initialCaloriesGoal;
+
   const handleSettings = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Check if any values have changed
-    const hasUserNameChanged = userName !== initialUserName;
-    const hasCaloriesGoalChanged = parseInt(caloriesGoal) !== initialCaloriesGoal;
 
     // If nothing changed, close modal and return early
     if (!hasUserNameChanged && !hasCaloriesGoalChanged) {
@@ -87,22 +88,30 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
             onSubmit={handleSettings}
             className="space-y-4"
           >
-            <Input
-              min={1000}
-              type="number"
-              value={caloriesGoal}
-              onChange={(e) => setCaloriesGoal(e.target.value)}
-              placeholder="Calorie goals"
-              required
-            />
-            <Input
-              disabled={!admin}
-              maxLength={20}
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              placeholder="Username"
-              required
-            />
+            <div className="grid items-center gap-1.5">
+              <Label htmlFor="calorie">Calorie goals</Label>
+              <Input
+                id="calorie"
+                min={1000}
+                type="number"
+                value={caloriesGoal}
+                onChange={(e) => setCaloriesGoal(e.target.value)}
+                placeholder="Calorie goals"
+                required
+              />
+            </div>
+            <div className="grid items-center gap-1.5">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                disabled={!admin}
+                maxLength={20}
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="Username"
+                required
+              />
+            </div>
             <Button
               type="submit"
               disabled={isPending}
@@ -136,23 +145,31 @@ export default function SettingsModal({ calorieGoalPromise, id, admin = false }:
           onSubmit={handleSettings}
           className="space-y-4 px-4"
         >
-          <Input
-            type="number"
-            className="text-base"
-            value={caloriesGoal}
-            onChange={(e) => setCaloriesGoal(e.target.value)}
-            placeholder="Calorie goals"
-            required
-          />
-          <Input
-            disabled={!admin}
-            className="text-base"
-            maxLength={20}
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="Username"
-            required
-          />
+          <div className="grid items-center gap-1.5">
+            <Label htmlFor="calorie">Calorie goals</Label>
+            <Input
+              id="calorie"
+              min={1000}
+              type="number"
+              value={caloriesGoal}
+              onChange={(e) => setCaloriesGoal(e.target.value)}
+              placeholder="Calorie goals"
+              required
+            />
+          </div>
+
+          <div className="grid items-center gap-1.5">
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              disabled={!admin}
+              maxLength={20}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Username"
+              required
+            />
+          </div>
           <Button
             className="w-full text-base"
             type="submit"
