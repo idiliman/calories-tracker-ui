@@ -128,13 +128,29 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
       </DrawerTrigger>
       <DrawerContent className="max-w-md">
         <DrawerHeader>
-          <DialogTitle>Update</DialogTitle>
+          <DialogTitle className="text-base">Update</DialogTitle>
         </DrawerHeader>
         <form
           onSubmit={handleSettings}
-          className="space-y-4"
+          className="space-y-4 px-4"
         >
+          <Input
+            className="text-base"
+            value={caloriesGoal}
+            onChange={(e) => setCaloriesGoal(e.target.value)}
+            placeholder="Calorie goals"
+            required
+          />
+          <Input
+            className="text-base"
+            maxLength={20}
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            placeholder="Username"
+            required
+          />
           <Button
+            className="w-full text-base"
             type="submit"
             disabled={isPending}
           >
@@ -143,7 +159,12 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
         </form>
         <DrawerFooter className="gap-2 sm:space-x-0">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button
+              variant="outline"
+              className="text-base"
+            >
+              Cancel
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

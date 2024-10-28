@@ -117,7 +117,7 @@ export default function AddMealsModal() {
       </DrawerTrigger>
       <DrawerContent className="max-w-md">
         <DrawerHeader>
-          <DrawerTitle>Add a Meal</DrawerTitle>
+          <DrawerTitle className="text-base">Add a Meal</DrawerTitle>
         </DrawerHeader>
         <form
           onSubmit={handleAddMeal}
@@ -132,7 +132,7 @@ export default function AddMealsModal() {
             disabled={isPending}
           />
           <Button
-            className="w-full"
+            className="w-full text-base"
             type="submit"
             disabled={isPending}
           >
@@ -141,7 +141,12 @@ export default function AddMealsModal() {
         </form>
         <DrawerFooter className="gap-2 sm:space-x-0">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button
+              variant="outline"
+              className="text-base"
+            >
+              Cancel
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
