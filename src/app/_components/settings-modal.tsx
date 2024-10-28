@@ -89,12 +89,15 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
             className="space-y-4"
           >
             <Input
+              min={1000}
+              type="number"
               value={caloriesGoal}
               onChange={(e) => setCaloriesGoal(e.target.value)}
               placeholder="Calorie goals"
               required
             />
             <Input
+              disabled
               maxLength={20}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
@@ -135,6 +138,7 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
           className="space-y-4 px-4"
         >
           <Input
+            type="number"
             className="text-base"
             value={caloriesGoal}
             onChange={(e) => setCaloriesGoal(e.target.value)}
@@ -142,6 +146,7 @@ export default function SettingsModal({ calorieGoalPromise, id }: SettingsModalP
             required
           />
           <Input
+            disabled
             className="text-base"
             maxLength={20}
             value={userName}
