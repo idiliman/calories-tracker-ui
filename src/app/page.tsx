@@ -9,18 +9,16 @@ export const experimental_ppr = true;
 
 export default function HomePage() {
   return (
-    <ScrollArea className="h-full w-full">
-      <div className="max-w-md mx-auto p-4 space-y-6">
-        <Suspense fallback={<div>Loading...</div>}>
-          <Header />
-        </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <ProgressCard />
-        </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <RecentMeals dailyIntakePromise={getDailyIntake()} />
-        </Suspense>
-      </div>
-    </ScrollArea>
+    <div className="space-y-6">
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProgressCard />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <RecentMeals dailyIntakePromise={getDailyIntake()} />
+      </Suspense>
+    </div>
   );
 }

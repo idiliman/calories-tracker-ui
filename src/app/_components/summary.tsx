@@ -57,8 +57,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
   } satisfies ChartConfig;
 
   return (
-    <div className="space-y-6 h-full">
-      <h1 className="text-2xl font-bold text-center">Nutrition Summary</h1>
+    <div className="space-y-6">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -122,7 +121,6 @@ export default function Summary({ summaryPromise }: SummaryProps) {
           </Card>
         </TabsContent>
       </Tabs>
-
       <Card>
         <CardHeader>
           <CardTitle>Daily Intake Chart</CardTitle>
@@ -172,7 +170,6 @@ export default function Summary({ summaryPromise }: SummaryProps) {
           </ChartContainer>
         </CardContent>
       </Card>
-
       <Card>
         <CardHeader>
           <CardTitle>Daily Intake Details</CardTitle>

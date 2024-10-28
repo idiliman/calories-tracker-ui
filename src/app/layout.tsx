@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navigation from "./_components/navigation";
 import { Analytics } from "@vercel/analytics/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,15 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <main className="max-w-md mx-auto p-4 h-[100vh]">
-          <div>
-            {children}
-            <Analytics />
-          </div>
-          <div className="pb-1 pt-4">
-            <Navigation />
-          </div>
-        </main>
+        <ScrollArea className="max-w-md mx-auto p-4 h-[calc(100dvh)]">
+          {children}
+          <Analytics />
+          <Navigation />
+        </ScrollArea>
       </body>
     </html>
   );
