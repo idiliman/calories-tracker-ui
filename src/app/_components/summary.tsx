@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SummaryProps {
   summaryPromise: Promise<SummaryData | null>;
@@ -57,7 +58,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
   } satisfies ChartConfig;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-12">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -175,58 +176,60 @@ export default function Summary({ summaryPromise }: SummaryProps) {
           <CardTitle>Daily Intake Details</CardTitle>
         </CardHeader>
         <CardContent>
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full"
-          >
-            {summary?.dailyIntakes.map((intake, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-              >
-                <AccordionTrigger>{format(new Date(intake.date), "MMMM d, yyyy hh:mm")}</AccordionTrigger>
-                <AccordionContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Food</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Calories</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {intake.foods.map((food, foodIndex) => (
-                        <TableRow key={foodIndex}>
-                          <TableCell>{food.name}</TableCell>
-                          <TableCell>{food.amount}</TableCell>
-                          <TableCell>{food.calories}</TableCell>
+          <ScrollArea className="max-h-[200px]">
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full"
+            >
+              {summary?.dailyIntakes.map((intake, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                >
+                  <AccordionTrigger>{format(new Date(intake.date), "MMMM d, yyyy hh:mm")}</AccordionTrigger>
+                  <AccordionContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Food</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead>Calories</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <div className="mt-4 grid grid-cols-2 gap-2">
-                    <div className="flex items-center gap-2">
-                      <Badge>Calories</Badge>
-                      <span>{intake.summary.calories}</span>
+                      </TableHeader>
+                      <TableBody>
+                        {intake.foods.map((food, foodIndex) => (
+                          <TableRow key={foodIndex}>
+                            <TableCell>{food.name}</TableCell>
+                            <TableCell>{food.amount}</TableCell>
+                            <TableCell>{food.calories}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <div className="flex items-center gap-2">
+                        <Badge>Calories</Badge>
+                        <span>{intake.summary.calories}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge>Protein</Badge>
+                        <span>{intake.summary.protein}g</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge>Carbs</Badge>
+                        <span>{intake.summary.carbs}g</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge>Fat</Badge>
+                        <span>{intake.summary.fat}g</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge>Protein</Badge>
-                      <span>{intake.summary.protein}g</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge>Carbs</Badge>
-                      <span>{intake.summary.carbs}g</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge>Fat</Badge>
-                      <span>{intake.summary.fat}g</span>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>
