@@ -254,6 +254,9 @@ export default function Summary({ summaryPromise }: SummaryProps) {
                           <TableHead>Food</TableHead>
                           <TableHead>Amount</TableHead>
                           <TableHead>Calories</TableHead>
+                          <TableHead>Protein</TableHead>
+                          <TableHead>Carbs</TableHead>
+                          <TableHead>Fat</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -262,6 +265,9 @@ export default function Summary({ summaryPromise }: SummaryProps) {
                             <TableCell>{food.name}</TableCell>
                             <TableCell>{food.amount}</TableCell>
                             <TableCell>{food.calories}</TableCell>
+                            <TableCell>{food.protein}</TableCell>
+                            <TableCell>{food.carbs}</TableCell>
+                            <TableCell>{food.fat}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
