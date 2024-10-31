@@ -121,3 +121,41 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
     return null;
   }
 }
+
+export async function deleteIntake(date: string): Promise<ApiResponse> {
+  try {
+    const id = await getId();
+
+    const response = await fetch(`${process.env.API_URL}/intake/${id}/${date}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      revalidateTag(`summary-${id}`);
+      revalidateTag(`daily-intake-${id}`);
+
+      console.log("purge cached", `summary-${id}`, `daily-intake-${id}`);
+
+      return {
+        status: response.status,
+        message: null,
+        error: null,
+      };
+    }
+    return {
+      status: response.status,
+      message: null,
+      error: "Failed to delete intake",
+    };
+  } catch (error) {
+    console.log("Error deleting intake:", JSON.stringify(error));
+    return {
+      status: 500,
+      message: null,
+      error: "Internal server error",
+    };
+  }
+}

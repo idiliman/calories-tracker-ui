@@ -1,14 +1,5 @@
 "use client";
 
-import { SummaryData } from "@/data/services/ai";
-import { use, useState } from "react";
-
-import { format } from "date-fns";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import {
   ChartContainer,
   ChartLegend,
@@ -17,19 +8,51 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { deleteIntake, SummaryData } from "@/data/services/ai";
+import { use, useState, useTransition } from "react";
+import { format } from "date-fns";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
 interface SummaryProps {
   summaryPromise: Promise<SummaryData | null>;
 }
 
-export default function Summary({ summaryPromise }: SummaryProps) {
-  const summary = use(summaryPromise);
+const chartConfig = {
+  calories: {
+    label: "Calories",
+    color: "hsl(var(--chart-1))",
+  },
+  protein: {
+    label: "Protein",
+    color: "hsl(var(--chart-2))",
+  },
+  carbs: {
+    label: "Carbs",
+    color: "hsl(var(--chart-3))",
+  },
+  fat: {
+    label: "Fat",
+    color: "hsl(var(--chart-4))",
+  },
+} satisfies ChartConfig;
 
+export default function Summary({ summaryPromise }: SummaryProps) {
+  const [isPending, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState("total");
   const isDesktop = useMediaQuery("(min-width: 640px)");
+
+  const summary = use(summaryPromise);
+  const router = useRouter();
 
   const chartData = summary?.dailyIntakes.reduce(
     (acc, intake) => {
@@ -63,24 +86,20 @@ export default function Summary({ summaryPromise }: SummaryProps) {
     }>
   );
 
-  const chartConfig = {
-    calories: {
-      label: "Calories",
-      color: "hsl(var(--chart-1))",
-    },
-    protein: {
-      label: "Protein",
-      color: "hsl(var(--chart-2))",
-    },
-    carbs: {
-      label: "Carbs",
-      color: "hsl(var(--chart-3))",
-    },
-    fat: {
-      label: "Fat",
-      color: "hsl(var(--chart-4))",
-    },
-  } satisfies ChartConfig;
+  const handleDeleteIntake = (date: string) => {
+    startTransition(async () => {
+      try {
+        const res = await deleteIntake(date);
+        if (res.status === 200) {
+          router.refresh();
+        } else {
+          console.log("Failed to delete intake:", res.error);
+        }
+      } catch (error) {
+        console.log("Failed to delete intake:", error);
+      }
+    });
+  };
 
   return (
     <div className="space-y-6 pb-12">
@@ -212,7 +231,22 @@ export default function Summary({ summaryPromise }: SummaryProps) {
                   key={index}
                   value={`item-${index}`}
                 >
-                  <AccordionTrigger>{format(new Date(intake.date), "MMMM d, yyyy hh:mm:ss")}</AccordionTrigger>
+                  <AccordionTrigger>
+                    <div className="flex items-center justify-center">
+                      <Button
+                        className="w-9 mr-2"
+                        asChild
+                        disabled={isPending}
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteIntake(intake.date)}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+
+                      <span>{format(new Date(intake.date), "MMMM d, yyyy hh:mm:ss")}</span>
+                    </div>
+                  </AccordionTrigger>
                   <AccordionContent>
                     <Table>
                       <TableHeader>

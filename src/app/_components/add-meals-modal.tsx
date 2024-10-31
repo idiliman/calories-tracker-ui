@@ -32,7 +32,7 @@ export default function AddMealsModal() {
   const router = useRouter();
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
-  const handleAddMeal = async (e: React.FormEvent) => {
+  const handleAddMeal = (e: React.FormEvent) => {
     startTransition(async () => {
       e.preventDefault();
       try {
