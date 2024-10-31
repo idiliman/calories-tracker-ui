@@ -31,13 +31,37 @@ export default function Summary({ summaryPromise }: SummaryProps) {
   const [activeTab, setActiveTab] = useState("total");
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
-  const chartData = summary?.dailyIntakes.map((intake) => ({
-    month: format(new Date(intake.date), "MMM dd hh:mm"),
-    calories: parseFloat(intake.summary.calories),
-    protein: parseFloat(intake.summary.protein),
-    carbs: parseFloat(intake.summary.carbs),
-    fat: parseFloat(intake.summary.fat),
-  }));
+  const chartData = summary?.dailyIntakes.reduce(
+    (acc, intake) => {
+      const existingDate = acc.find(
+        (item) => format(new Date(item.month), "MMM dd") === format(new Date(intake.date), "MMM dd")
+      );
+
+      if (existingDate) {
+        existingDate.calories += parseFloat(intake.summary.calories);
+        existingDate.protein += parseFloat(intake.summary.protein);
+        existingDate.carbs += parseFloat(intake.summary.carbs);
+        existingDate.fat += parseFloat(intake.summary.fat);
+      } else {
+        acc.push({
+          month: format(new Date(intake.date), "MMM dd"),
+          calories: parseFloat(intake.summary.calories),
+          protein: parseFloat(intake.summary.protein),
+          carbs: parseFloat(intake.summary.carbs),
+          fat: parseFloat(intake.summary.fat),
+        });
+      }
+
+      return acc;
+    },
+    [] as Array<{
+      month: string;
+      calories: number;
+      protein: number;
+      carbs: number;
+      fat: number;
+    }>
+  );
 
   const chartConfig = {
     calories: {
