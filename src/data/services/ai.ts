@@ -3,6 +3,12 @@
 import { getId } from "@/lib/cookies";
 import { revalidateTag } from "next/cache";
 
+export interface LeaderboardData {
+  rank: number;
+  username: string;
+  calories: string;
+}
+
 interface Food {
   name: string;
   calories: string;
@@ -118,6 +124,19 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
     return null;
   } catch (error) {
     console.log("Error getting daily intake:", JSON.stringify(error));
+    return null;
+  }
+}
+
+export async function getLeaderboard(): Promise<LeaderboardData[] | null> {
+  try {
+    const response = await fetch(`${process.env.API_URL}/leaderboard`);
+    if (response.status === 200) {
+      return response.json();
+    }
+    return null;
+  } catch (error) {
+    console.log("Error getting leaderboard:", JSON.stringify(error));
     return null;
   }
 }

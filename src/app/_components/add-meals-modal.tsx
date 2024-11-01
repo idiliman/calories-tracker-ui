@@ -16,14 +16,17 @@ import { useEffect, useState, useTransition } from "react";
 import { postIntake } from "@/data/services/ai";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useRouter } from "next/navigation";
+import { useWebSocket } from "@/contexts/WebSocketContext";
 
 const placeholders = [
   "3 roti canai, teh tarik",
-  "Yesterday, 1 set ayam gepuk, teh o ais",
+  "Yesterday, nasi ayam gepuk, teh o ais",
   "2 eggs, toast, and coffee (no sugar)",
 ];
 
 export default function AddMealsModal() {
+  const { socket, lastMessage, isConnected } = useWebSocket();
+
   const [newMeal, setNewMeal] = useState("");
   const [placeholder, setPlaceholder] = useState(placeholders[0]);
   const [isPending, startTransition] = useTransition();
@@ -41,6 +44,7 @@ export default function AddMealsModal() {
           router.refresh();
           setNewMeal("");
           setIsOpen(false);
+          socket?.send(JSON.stringify({ type: "new_intake" }));
         } else {
           console.log("Failed to add meal:", res.error);
         }

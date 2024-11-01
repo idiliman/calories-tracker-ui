@@ -3,6 +3,7 @@ import { getDailyIntake } from "@/data/services/ai";
 import ProgressCard, { ProgressCardSkeleton } from "./_components/progress-card";
 import RecentMeals, { RecentMealsSkeleton } from "./_components/recent-meals";
 import Header, { HeaderSkeleton } from "./_components/header";
+import Leaderboard, { LeaderboardSkeleton } from "./_components/leaderboard";
 
 export const experimental_ppr = true;
 
@@ -17,6 +18,9 @@ export default async function HomePage() {
       </Suspense>
       <Suspense fallback={<RecentMealsSkeleton />}>
         <RecentMeals dailyIntakePromise={getDailyIntake()} />
+      </Suspense>
+      <Suspense fallback={<LeaderboardSkeleton />}>
+        <Leaderboard />
       </Suspense>
     </div>
   );

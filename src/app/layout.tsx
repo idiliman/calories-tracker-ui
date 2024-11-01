@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "./_components/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { WebSocketProvider } from "@/contexts/WebSocketContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,11 +33,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ScrollArea className="max-w-md mx-auto p-4 h-[calc(100dvh)]">
-          {children}
-          <Analytics />
-          <Navigation />
-        </ScrollArea>
+        <WebSocketProvider>
+          <ScrollArea className="max-w-md mx-auto p-4 h-[calc(100dvh)]">
+            {children}
+            <Analytics />
+            <Navigation />
+          </ScrollArea>
+        </WebSocketProvider>
       </body>
     </html>
   );
