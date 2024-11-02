@@ -50,7 +50,7 @@ interface ApiResponse {
   error: string | null;
 }
 
-const REVALIDATE_TIME = 86400; // 24 hours
+const REVALIDATE_TIME = 60; // 1 minute
 
 export async function postIntake({ prompt }: { prompt: string }): Promise<ApiResponse> {
   try {
@@ -151,7 +151,7 @@ export async function getLeaderboard(): Promise<LeaderboardData[] | null> {
       },
       // cache: "force-cache",
       next: {
-        revalidate: 60,
+        revalidate: REVALIDATE_TIME,
         tags: [`leaderboard`],
       },
     });

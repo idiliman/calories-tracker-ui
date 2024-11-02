@@ -19,11 +19,7 @@ import { useRouter } from "next/navigation";
 import { useWebSocket } from "@/contexts/WebSocketContext";
 import { toast } from "sonner";
 
-const placeholders = [
-  "3 roti canai, teh tarik",
-  "Yesterday, nasi ayam gepuk, teh o ais",
-  "2 eggs, toast, and coffee (no sugar)",
-];
+const placeholders = ["3 roti canai, teh tarik", "nasi ayam gepuk, teh o ais", "2 eggs, toast, coffee (no sugar)"];
 
 export default function AddMealsModal() {
   const { socket, lastMessage, isConnected } = useWebSocket();
@@ -92,6 +88,8 @@ export default function AddMealsModal() {
             className="space-y-4"
           >
             <Textarea
+              minLength={10}
+              maxLength={35}
               className="min-h-[100px] text-base"
               value={newMeal}
               onChange={(e) => setNewMeal(e.target.value)}
