@@ -60,6 +60,7 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        SECRET_PASSWORD: process.env.SECRET_PASSWORD ?? "",
       },
       body: JSON.stringify({ prompt, userName: id }),
     });
@@ -96,6 +97,9 @@ export async function getSummary(): Promise<SummaryData | null> {
     const id = await getId();
 
     const response = await fetch(`${process.env.API_URL}/summary/${id}`, {
+      headers: {
+        SECRET_PASSWORD: process.env.SECRET_PASSWORD ?? "",
+      },
       // cache: "force-cache",
       next: {
         revalidate: REVALIDATE_TIME,
@@ -117,6 +121,9 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
     const id = await getId();
 
     const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`, {
+      headers: {
+        SECRET_PASSWORD: process.env.SECRET_PASSWORD ?? "",
+      },
       // cache: "force-cache",
       next: {
         revalidate: REVALIDATE_TIME,
@@ -136,6 +143,9 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
 export async function getLeaderboard(): Promise<LeaderboardData[] | null> {
   try {
     const response = await fetch(`${process.env.API_URL}/leaderboard`, {
+      headers: {
+        SECRET_PASSWORD: process.env.SECRET_PASSWORD ?? "",
+      },
       // cache: "force-cache",
       next: {
         revalidate: 60,
@@ -160,6 +170,7 @@ export async function deleteIntake(date: string): Promise<ApiResponse> {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        SECRET_PASSWORD: process.env.SECRET_PASSWORD ?? "",
       },
     });
 

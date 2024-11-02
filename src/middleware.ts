@@ -17,7 +17,6 @@ const ratelimit = new Ratelimit({
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
-  request.headers.set("SECRET_PASSWORD", process.env.SECRET_PASSWORD ?? "");
   const ip = request.headers.get("x-real-ip");
 
   console.log("ip:", ip);
