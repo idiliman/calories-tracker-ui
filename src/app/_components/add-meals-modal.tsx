@@ -41,11 +41,12 @@ export default function AddMealsModal() {
       e.preventDefault();
       try {
         const res = await postIntake({ prompt: newMeal });
+
         if (res.status === 200) {
           router.refresh();
           setNewMeal("");
           setIsOpen(false);
-          socket?.send(JSON.stringify({ type: "new_intake" }));
+          return;
         }
 
         if (res.status === 429) {

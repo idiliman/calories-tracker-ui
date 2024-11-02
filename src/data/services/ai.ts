@@ -1,7 +1,7 @@
 "use server";
 
 import { getId } from "@/lib/cookies";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 
 export interface LeaderboardData {
@@ -66,8 +66,11 @@ export async function postIntake({ prompt }: { prompt: string }): Promise<ApiRes
     });
 
     if (response.status === 200) {
+      revalidatePath("/");
+      revalidatePath("/summary");
       revalidateTag(`summary-${id}`);
       revalidateTag(`daily-intake-${id}`);
+      revalidateTag(`leaderboard`);
 
       console.log("purge cached", `summary-${id}`, `daily-intake-${id}`);
 
@@ -182,11 +185,13 @@ export async function deleteIntake(date: string): Promise<ApiResponse> {
     console.log("rateLimitLimit:", rateLimitLimit);
 
     if (response.status === 200) {
-      // revalidateTag(`summary-${id}`);
-      // revalidateTag(`daily-intake-${id}`);
-      // revalidateTag(`leaderboard`);
+      revalidatePath("/");
+      revalidatePath("/summary");
+      revalidateTag(`summary-${id}`);
+      revalidateTag(`daily-intake-${id}`);
+      revalidateTag(`leaderboard`);
 
-      // console.log("purge cached", `summary-${id}`, `daily-intake-${id}`, `leaderboard`);
+      console.log("purge cached", `summary-${id}`, `daily-intake-${id}`, `leaderboard`);
 
       return {
         status: response.status,

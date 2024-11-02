@@ -96,6 +96,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
 
         if (res.status === 200) {
           router.refresh();
+          return;
         }
 
         if (res.status === 429) {
