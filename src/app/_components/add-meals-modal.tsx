@@ -17,6 +17,7 @@ import { postIntake } from "@/data/services/ai";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useRouter } from "next/navigation";
 import { useWebSocket } from "@/contexts/WebSocketContext";
+import { toast } from "sonner";
 
 const placeholders = [
   "3 roti canai, teh tarik",
@@ -45,11 +46,16 @@ export default function AddMealsModal() {
           setNewMeal("");
           setIsOpen(false);
           socket?.send(JSON.stringify({ type: "new_intake" }));
+        }
+
+        if (res.status === 429) {
+          toast.error("Rate limit exceeded");
         } else {
-          console.log("Failed to add meal:", res.error);
+          toast.error("Failed to add meal");
         }
       } catch (error) {
         console.log("Failed to add meal:", error);
+        toast.error("Failed to add meal");
       }
     });
   };

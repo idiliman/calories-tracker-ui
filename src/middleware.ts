@@ -2,10 +2,43 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { generateRandomName } from "@/lib/randomName";
 import { CALORIE_GOAL_KEY, COOKIE_OPTIONS, ID_KEY } from "@/lib/cookies";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+const redis = new Redis({
+  url: process.env.REDIS_URL,
+  token: process.env.REDIS_TOKEN,
+});
+
+const ratelimit = new Ratelimit({
+  redis: redis,
+  limiter: Ratelimit.fixedWindow(2, "5 s"),
+});
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
+  // request.headers.set("SECRET_PASSWORD", process.env.SECRET_PASSWORD ?? "");
+  const ip = request.headers.get("x-real-ip");
 
+  console.log("ip:", ip);
+
+  // Rate limit
+  const identifier = ip ?? request.url;
+  const result = await ratelimit.limit(identifier);
+  response.headers.set("X-RateLimit-Limit", result.limit.toString());
+  response.headers.set("X-RateLimit-Remaining", result.remaining.toString());
+
+  if (!result.success) {
+    return new Response("The request has been rate limited.", {
+      status: 429,
+      headers: {
+        "X-RateLimit-Limit": result.limit.toString(),
+        "X-RateLimit-Remaining": result.remaining.toString(),
+      },
+    });
+  }
+
+  // Set cookies
   const idCookie = request.cookies.get(ID_KEY)?.value;
   const goalsCookie = request.cookies.get(CALORIE_GOAL_KEY)?.value;
 

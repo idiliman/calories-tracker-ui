@@ -2,6 +2,7 @@
 
 import { getId } from "@/lib/cookies";
 import { revalidateTag } from "next/cache";
+import { headers } from "next/headers";
 
 export interface LeaderboardData {
   rank: number;
@@ -162,6 +163,13 @@ export async function deleteIntake(date: string): Promise<ApiResponse> {
       },
     });
 
+    const headersList = await headers();
+    const rateLimitLimit = headersList.get("X-RateLimit-Limit");
+    const rateLimitRemaining = headersList.get("X-RateLimit-Remaining");
+
+    console.log("rateLimitRemaining:", rateLimitRemaining);
+    console.log("rateLimitLimit:", rateLimitLimit);
+
     if (response.status === 200) {
       // revalidateTag(`summary-${id}`);
       // revalidateTag(`daily-intake-${id}`);
@@ -175,8 +183,9 @@ export async function deleteIntake(date: string): Promise<ApiResponse> {
         error: null,
       };
     }
+
     return {
-      status: response.status,
+      status: rateLimitRemaining === "0" ? 429 : response.status,
       message: null,
       error: "Failed to delete intake",
     };

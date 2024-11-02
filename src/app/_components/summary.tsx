@@ -21,7 +21,8 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface SummaryProps {
   summaryPromise: Promise<SummaryData | null>;
@@ -48,6 +49,7 @@ const chartConfig = {
 
 export default function Summary({ summaryPromise }: SummaryProps) {
   const [isPending, startTransition] = useTransition();
+  const [keyToDelete, setKeyToDelete] = useState<string | null>();
   const [activeTab, setActiveTab] = useState("total");
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
@@ -87,16 +89,25 @@ export default function Summary({ summaryPromise }: SummaryProps) {
   );
 
   const handleDeleteIntake = (date: string) => {
+    setKeyToDelete(date);
     startTransition(async () => {
       try {
         const res = await deleteIntake(date);
+
         if (res.status === 200) {
           router.refresh();
+        }
+
+        if (res.status === 429) {
+          toast.error("Rate limit exceeded");
         } else {
-          console.log("Failed to delete intake:", res.error);
+          toast.error("Failed to delete intake");
         }
       } catch (error) {
         console.log("Failed to delete intake:", error);
+        toast.error("Failed to delete intake");
+      } finally {
+        setKeyToDelete(null);
       }
     });
   };
@@ -241,7 +252,11 @@ export default function Summary({ summaryPromise }: SummaryProps) {
                         size="sm"
                         onClick={() => handleDeleteIntake(intake.date)}
                       >
-                        <Trash2 className="size-4" />
+                        {isPending && keyToDelete === intake.date ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="size-4" />
+                        )}
                       </Button>
 
                       <span>{format(new Date(intake.date), "MMMM d, yyyy hh:mm:ss")}</span>
