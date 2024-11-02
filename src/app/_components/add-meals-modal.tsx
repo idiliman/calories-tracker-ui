@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import { useWebSocket } from "@/contexts/WebSocketContext";
 import { toast } from "sonner";
 
-const placeholders = ["3 roti canai, teh tarik", "nasi ayam gepuk, teh o ais", "2 eggs, toast, coffee (no sugar)"];
+const placeholders = ["1 pcs roti canai, teh tarik", "nasi ayam gepuk, teh o ais", "2 eggs, toast, coffee (no sugar)"];
 
 export default function AddMealsModal() {
   const [newMeal, setNewMeal] = useState("");
