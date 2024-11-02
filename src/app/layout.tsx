@@ -19,8 +19,23 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Calories Tracker",
+  title: "Calories Tracker AI",
   description: "🍔🍕🍣🍜🍩🍰🍪🍫🍬🍭🍮🍼🍵🍶",
+  openGraph: {
+    title: "Calories Tracker AI",
+    description: "🍔🍕🍣🍜🍩🍰🍪🍫🍬🍭🍮🍼🍵🍶",
+    url: "https://cal-trckr.vercel.app",
+    siteName: "Calories Tracker AI",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "https://cal-trckr.vercel.app/og.gif",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
