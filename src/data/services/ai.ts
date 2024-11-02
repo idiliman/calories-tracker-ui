@@ -149,11 +149,6 @@ export async function getLeaderboard(): Promise<LeaderboardData[] | null> {
       headers: {
         SECRET_PASSWORD: process.env.SECRET_PASSWORD ?? "",
       },
-      // cache: "force-cache",
-      next: {
-        revalidate: REVALIDATE_TIME,
-        tags: [`leaderboard`],
-      },
     });
     if (response.status === 200) {
       return response.json();
@@ -189,9 +184,9 @@ export async function deleteIntake(date: string): Promise<ApiResponse> {
       revalidatePath("/summary");
       revalidateTag(`summary-${id}`);
       revalidateTag(`daily-intake-${id}`);
-      revalidateTag(`leaderboard`);
+      // revalidateTag(`leaderboard`);
 
-      console.log("purge cached", `summary-${id}`, `daily-intake-${id}`, `leaderboard`);
+      console.log("purge cached", `summary-${id}`, `daily-intake-${id}`);
 
       return {
         status: response.status,

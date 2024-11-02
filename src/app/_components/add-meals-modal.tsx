@@ -22,8 +22,6 @@ import { toast } from "sonner";
 const placeholders = ["3 roti canai, teh tarik", "nasi ayam gepuk, teh o ais", "2 eggs, toast, coffee (no sugar)"];
 
 export default function AddMealsModal() {
-  const { socket, lastMessage, isConnected } = useWebSocket();
-
   const [newMeal, setNewMeal] = useState("");
   const [placeholder, setPlaceholder] = useState(placeholders[0]);
   const [isPending, startTransition] = useTransition();
@@ -88,7 +86,7 @@ export default function AddMealsModal() {
             className="space-y-4"
           >
             <Textarea
-              minLength={10}
+              minLength={5}
               maxLength={35}
               className="min-h-[100px] text-base"
               value={newMeal}
@@ -132,6 +130,8 @@ export default function AddMealsModal() {
           className="space-y-4 px-4"
         >
           <Textarea
+            minLength={5}
+            maxLength={35}
             className="min-h-[100px] text-base"
             value={newMeal}
             onChange={(e) => setNewMeal(e.target.value)}
