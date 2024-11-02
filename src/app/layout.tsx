@@ -27,19 +27,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+  return (👍🏻
     <html
       lang="en"
       suppressHydrationWarning
     >
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <WebSocketProvider>
-          <ScrollArea className="max-w-md mx-auto p-4 h-[calc(100dvh)]">
-            {children}
-            <Analytics />
-            <Navigation />
+        <div className="relative max-w-md mx-auto">
+          <ScrollArea className="p-4 h-[calc(100dvh)]">
+            <main className="pb-12">{children}</main>
           </ScrollArea>
-        </WebSocketProvider>
+          {/* Blur effect overlay */}
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+          <Navigation />
+          <Analytics />
+        </div>
       </body>
     </html>
   );

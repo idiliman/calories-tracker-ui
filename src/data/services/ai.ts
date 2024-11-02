@@ -49,6 +49,8 @@ interface ApiResponse {
   error: string | null;
 }
 
+const REVALIDATE_TIME = 86400; // 24 hours
+
 export async function postIntake({ prompt }: { prompt: string }): Promise<ApiResponse> {
   try {
     const id = await getId();
@@ -93,8 +95,9 @@ export async function getSummary(): Promise<SummaryData | null> {
     const id = await getId();
 
     const response = await fetch(`${process.env.API_URL}/summary/${id}`, {
-      cache: "force-cache",
+      // cache: "force-cache",
       next: {
+        revalidate: REVALIDATE_TIME,
         tags: [`summary-${id}`],
       },
     });
@@ -113,8 +116,9 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
     const id = await getId();
 
     const response = await fetch(`${process.env.API_URL}/daily_intake/${id}`, {
-      cache: "force-cache",
+      // cache: "force-cache",
       next: {
+        revalidate: REVALIDATE_TIME,
         tags: [`daily-intake-${id}`],
       },
     });
@@ -130,7 +134,13 @@ export async function getDailyIntake(): Promise<DailyIntake[] | null> {
 
 export async function getLeaderboard(): Promise<LeaderboardData[] | null> {
   try {
-    const response = await fetch(`${process.env.API_URL}/leaderboard`);
+    const response = await fetch(`${process.env.API_URL}/leaderboard`, {
+      // cache: "force-cache",
+      next: {
+        revalidate: 60,
+        tags: [`leaderboard`],
+      },
+    });
     if (response.status === 200) {
       return response.json();
     }
@@ -153,10 +163,11 @@ export async function deleteIntake(date: string): Promise<ApiResponse> {
     });
 
     if (response.status === 200) {
-      revalidateTag(`summary-${id}`);
-      revalidateTag(`daily-intake-${id}`);
+      // revalidateTag(`summary-${id}`);
+      // revalidateTag(`daily-intake-${id}`);
+      // revalidateTag(`leaderboard`);
 
-      console.log("purge cached", `summary-${id}`, `daily-intake-${id}`);
+      // console.log("purge cached", `summary-${id}`, `daily-intake-${id}`, `leaderboard`);
 
       return {
         status: response.status,

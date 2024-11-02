@@ -102,7 +102,7 @@ export default function Summary({ summaryPromise }: SummaryProps) {
   };
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-6">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}

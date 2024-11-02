@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getDailyIntake } from "@/data/services/ai";
+import { getDailyIntake, getLeaderboard } from "@/data/services/ai";
 import ProgressCard, { ProgressCardSkeleton } from "./_components/progress-card";
 import RecentMeals, { RecentMealsSkeleton } from "./_components/recent-meals";
 import Header, { HeaderSkeleton } from "./_components/header";
@@ -20,7 +20,7 @@ export default async function HomePage() {
         <RecentMeals dailyIntakePromise={getDailyIntake()} />
       </Suspense>
       <Suspense fallback={<LeaderboardSkeleton />}>
-        <Leaderboard />
+        <Leaderboard leaderboardPromise={getLeaderboard()} />
       </Suspense>
     </div>
   );
